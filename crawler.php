@@ -35,14 +35,10 @@ for($p = 1; $p < 500 ; $p++) {
 
 
 
-$html = file_get_html('computer-science.htm'); /*http://www.internships.com/computer-science?page=2  'http://www.internships.com/computer-science?page='.$p*/
+$html = file_get_html('http://www.internships.com/computer-science?page='.$p); /*http://www.internships.com/computer-science?page=2  */
 
 // Find all posts
 foreach($html->find('div.internship-result-link-item') as $post) {
-
-
-
-
 // initialisation 
 	$item['internship-payment'] = 'Not paid ';
     $item['College-Credit-Required'] = 'false' ; 
@@ -60,7 +56,7 @@ foreach($html->find('div.internship-result-link-item') as $post) {
  	$tmp = $info->title;
 
  	switch($tmp)
-{
+{ 
   
     case 'Part Time':
     $item['internship-working-time'] = 'Part Time' ;
@@ -88,7 +84,7 @@ foreach($html->find('div.internship-result-link-item') as $post) {
     }
  echo  $item['internship-title'] ;    
 
- fputcsv($fp,explode(',',$item));
+ fputcsv($fp,$item);
 
 /*----------------------INSERT contry if not exist , get country ID , INSERT Job using country id  ---------------------------------------------
 
