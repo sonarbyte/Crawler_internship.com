@@ -1,0 +1,62 @@
+mysql -u root  --local-infile nader14_jobb120
+
+
+---------------------------------
+
+LOAD DATA LOCAL INFILE '/var/www/jobber/danger43/Crawler_internship.com/computer/computer.csv' INTO TABLE cities  FIELDS TERMINATED BY '^' LINES TERMINATED BY '\n'   (@paid,@college_cridit,@campany_name,@cities,@deadline,@link,@title,@time) set name=@cities;
+
+
+
+------------FOR ALL CSV !!!!!!!!!!!!!!!!!!!
+
+------------------------------------------
+
+
+
+CREATE TABLE `tmp` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(50) NOT NULL,`ascii_name` varchar(50) NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=73 ;
+INSERT INTO tmp(name) SELECT DISTINCT name FROM cities;   
+DROP TABLE cities;
+RENAME TABLE tmp TO cities;
+delete from tmp where 1=1 ;
+
+-------------------------------------
+
+UPDATE cities SET ascii_name=REPLACE(SUBSTRING_INDEX(name, ',', 1), '"', "");
+UPDATE cities SET name=REPLACE(SUBSTRING_INDEX(name, ',', -1), '"', "");
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+LOAD DATA LOCAL INFILE '/var/www/jobber/danger43/Crawler_internship.com/computer/computer.csv' INTO TABLE jobs FIELDS TERMINATED BY '^' LINES TERMINATED BY '\n'   (@paid,@college_cridit,@description, @campany_name,@cities,@deadline,@link,@title,@time) set  type_id =1 category_id=1 title=@title description=@description company=@campany_name city_id=(select FIRST(id) from cities where CHARINDEX(ascii_name ,@cities) > 0 ) url=@link created_on=(SELECT timestamp('2015-04-30 14:53:27') - INTERVAL FLOOR( RAND( ) * 366) DAY) views_count=ABS(Checksum(NewID()) % 200)+39 apply_online=ABS(Checksum(NewID()) % 20)+12 ;
+
+
+
+------------FOR ALL CSV but please change the category !!!!!!!!!!!!!!!!!!!
+
+
+SELECT timestamp('2015-04-30 14:53:27') - INTERVAL FLOOR( RAND( ) * 366) DAY;
+
+| category_id      | int(11)          | NO   | MUL | NULL                |                |
+| title            | varchar(100)     | YES  |     |                     |                |
+| description      | text             | YES  |     | NULL                |                |
+| company          | varchar(150)     | YES  |     |                     |                |
+| city_id          | int(11)          | YES  |     | NULL                |                |
+| url              | varchar(150)     | YES  |     | NULL                |                |
+| apply            | varchar(200)     | YES  |     |                     |                |
+| created_on       | timestamp        | NO   |     | 0000-00-00 00:00:00 |                |
+| is_temp          | tinyint(4)       | NO   |     | NULL                |                |
+| is_active        | tinyint(4)       | NO   |     | NULL                |                |
+| views_count      | int(11)          | NO   |     | NULL                |                |
+| auth             | varchar(32)      | NO   |     | NULL                |                |
+| outside_location | varchar(150)     | NO   |     | NULL                |                |
+| poster_email     | varchar(100)     | NO   |     | NULL                |                |
+| apply_online     | tinyint(4)       | NO   |     | NULL                |                |
+| spotlight        | tinyint(4)       | NO   |     | NULL                |                |
+
+
+
+

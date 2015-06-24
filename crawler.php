@@ -6,38 +6,34 @@
 /*list category 
 
 Marketing----------
+
 Accounting-------------
-Engineering---------
-Finance-----------
-Law------------
-Biology
-Computer Science---
-Art & Design-----
+
+
+
+Art & Design-----advertising/design/public-relations/photography/fashion/
 Business ------------
 
 */
-
 
 /* category !!!! http://www.internships.com/computer-science?page=2*/
 
 /*key word research http://www.internships.com/search/posts?Keywords=engineer%20&Location=newtork&page=2 */
 
 
-
 ini_set('display_errors',1); 
 error_reporting(E_ALL);
 
-$fp = fopen('computer.csv', 'w');
+$fp = fopen('test.csv', 'w');
 
 include('inc/simple_html_dom.php');
 
-for($p = 1; $p < 500 ; $p++) {
+for($p = 1; $p < 550 ; $p++) {
 
-
-
-$html = file_get_html('http://www.internships.com/computer-science?page='.$p); /*http://www.internships.com/computer-science?page=2  */
+$html = file_get_html('http://www.internships.com/computer-science?page='.$p); /*http://www.internships.com/computer-science?page=2*/
 
 // Find all posts
+
 foreach($html->find('div.internship-result-link-item') as $post) {
 // initialisation 
 	$item['internship-payment'] = 'Not paid ';
@@ -45,7 +41,7 @@ foreach($html->find('div.internship-result-link-item') as $post) {
 
     $item['description'] = $post->find('div.description', 0)->plaintext ; 
     $item['company-name'] = $post->find('span.company-name', 0)->plaintext ; 
-    $item['company-name'] = $post->find('span.internship-location', 0)->plaintext ; 
+    $item['company-location'] = $post->find('span.internship-location', 0)->plaintext ; 
     $item['internship-dates'] = $post->find('div.internship-dates', 0)->plaintext ; 
     $item['internship-link'] = $post->find('a', 0)->href ;
     $item['internship-title'] = $post->find('a', 0)->title; 
@@ -82,9 +78,9 @@ foreach($html->find('div.internship-result-link-item') as $post) {
 
 
     }
- echo  $item['internship-title'] ;    
+ echo   $item['company-name']."\n" ;    
 
- fputcsv($fp,$item);
+ fputcsv($fp,$item,"^");
 
 /*----------------------INSERT contry if not exist , get country ID , INSERT Job using country id  ---------------------------------------------
 
