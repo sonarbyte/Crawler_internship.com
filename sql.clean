@@ -3,7 +3,7 @@ mysql -u root  --local-infile nader14_jobb120
 
 ---------------------------------
 
-LOAD DATA LOCAL INFILE '/var/www/jobber/danger43/Crawler_internship.com/computer/computer.csv' INTO TABLE cities  FIELDS TERMINATED BY '^' LINES TERMINATED BY '\n'   (@paid,@college_cridit,@campany_name,@cities,@deadline,@link,@title,@time) set name=@cities;
+LOAD DATA LOCAL INFILE '/var/www/jobber/danger43/Crawler_internship.com/computer.csv' INTO TABLE cities  FIELDS TERMINATED BY '^' LINES TERMINATED BY '\n'   (@paid,@college_cridit,@description, @campany_name,@cities,@deadline,@link,@title,@time) set name=@cities;
 
 
 
@@ -17,7 +17,7 @@ CREATE TABLE `tmp` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(50) NOT 
 INSERT INTO tmp(name) SELECT DISTINCT name FROM cities;   
 DROP TABLE cities;
 RENAME TABLE tmp TO cities;
-delete from tmp where 1=1 ;
+
 
 -------------------------------------
 
@@ -31,8 +31,15 @@ UPDATE cities SET name=REPLACE(SUBSTRING_INDEX(name, ',', -1), '"', "");
 
 
 
-LOAD DATA LOCAL INFILE '/var/www/jobber/danger43/Crawler_internship.com/computer/computer.csv' INTO TABLE jobs FIELDS TERMINATED BY '^' LINES TERMINATED BY '\n'   (@paid,@college_cridit,@description, @campany_name,@cities,@deadline,@link,@title,@time) set  type_id =1 category_id=1 title=@title description=@description company=@campany_name city_id=(select FIRST(id) from cities where CHARINDEX(ascii_name ,@cities) > 0 ) url=@link created_on=(SELECT timestamp('2015-04-30 14:53:27') - INTERVAL FLOOR( RAND( ) * 366) DAY) views_count=ABS(Checksum(NewID()) % 200)+39 apply_online=ABS(Checksum(NewID()) % 20)+12 ;
+LOAD DATA LOCAL INFILE '/var/www/jobber/danger43/Crawler_internship.com/computer.csv' INTO TABLE jobs FIELDS TERMINATED BY '^' LINES TERMINATED BY '"\n'   (@paid,@college_cridit,@description, @campany_name,@cities,@deadline,@link,@title,@time) set type_id =1 ,category_id=1 , title=@title , description=@description , company=@campany_name , city_id=(select id from cities where ascii_name LIKE CONCAT('%' , @cities , '%'  ) ), url=@link , created_on=(SELECT timestamp('2015-04-30 14:53:27') - INTERVAL FLOOR( RAND( ) * 366) DAY), views_count=(select floor(99*RAND()+11)), apply_online=(select floor(96*RAND()+1)) , is_active=true , apply_online=true , poster_email='support@roxifier.com';
 
+
+
+---------------------------------------------------
+
+
+UPDATE cities SET ascii_name=REPLACE(SUBSTRING_INDEX(name, ',', 1), '"', "");
+UPDATE cities SET name=REPLACE(SUBSTRING_INDEX(name, ',', -1), '"', "");
 
 
 ------------FOR ALL CSV but please change the category !!!!!!!!!!!!!!!!!!!
@@ -60,3 +67,4 @@ SELECT timestamp('2015-04-30 14:53:27') - INTERVAL FLOOR( RAND( ) * 366) DAY;
 
 
 
+ Caractère	Code ISO	Code HTML

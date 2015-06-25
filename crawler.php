@@ -24,7 +24,7 @@ Business ------------
 ini_set('display_errors',1); 
 error_reporting(E_ALL);
 
-$fp = fopen('test.csv', 'w');
+$fp = fopen('computer.csv', 'w');
 
 include('inc/simple_html_dom.php');
 
